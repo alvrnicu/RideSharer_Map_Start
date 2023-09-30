@@ -16,10 +16,10 @@ class MapViewController: UIViewController {
     //Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkLocationServces()
+        checkLocationServices()
     }
     
-    func checkLocationServces() {
+    func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
             locationManagerDidChangeAuthorization()
         } else {
@@ -33,7 +33,7 @@ class MapViewController: UIViewController {
         case .authorizedWhenInUse, .authorizedAlways:
             mapView.showsUserLocation = true
         case .denied, .restricted:
-            alertLocationPermNeeded()
+            alertDeniedLocation()
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
             mapView.showsUserLocation = true
@@ -47,7 +47,7 @@ class MapViewController: UIViewController {
         let alert = UIAlertController(
             title: "Need Location Access Permissions",
             message: "GPS access is restricted. Go to Location Services under Privacy to enable GPS to have access to tracking.",
-            preferredStyle: UIAlertController.Style.alert
+            preferredStyle: .alert
         )
         
         alert.addAction(UIAlertAction(title: "Cancel",
@@ -61,18 +61,19 @@ class MapViewController: UIViewController {
                                                                 options: [:],
                                                                 completionHandler: nil)
         }))
-        present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func alertDeniedLocation() {
         let alert = UIAlertController(
             title: "Denied",
             message: "You have denied Location Access. Tracking unavailable.",
-            preferredStyle: UIAlertController.Style.alert
+            preferredStyle: .alert
             )
-        alert.addAction(UIAlertAction(title: "OK", 
-                                      style: UIAlertAction.Style.default,
-                                      handler: nil))
-        present(alert, animated: true, completion: nil)
+        let OK = UIAlertAction(title: "OK",
+                                     style: .default,
+                                     handler: nil)
+        alert.addAction(OK)
+        self.present(alert, animated: true, completion: nil)
     }
 }
